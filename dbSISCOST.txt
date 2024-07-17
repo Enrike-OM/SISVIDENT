@@ -1,0 +1,160 @@
+CREATE DATABASE SISCOST;
+
+USE SISCOST;
+
+CREATE TABLE cita
+(
+	cita_id              VARCHAR(4) NOT NULL,
+	cita_fechaReserva    DATE NOT NULL,
+	odont_id             VARCHAR(4) NOT NULL,
+	cita_hora            TIME NOT NULL,
+	paciente_id          VARCHAR(4) NOT NULL,
+	usuario_id           VARCHAR(4) NOT NULL
+);
+
+
+
+ALTER TABLE cita
+ADD PRIMARY KEY (cita_id,odont_id,paciente_id,usuario_id);
+
+
+
+CREATE TABLE historiaClinica
+(
+	hc_id                VARCHAR(4) NOT NULL,
+	hc_fechaApertura     DATE NOT NULL,
+	hc_estado            VARCHAR(4) NOT NULL,
+	paciente_id          VARCHAR(4) NOT NULL,
+	tratamientos_id      VARCHAR(4) NOT NULL,
+	hc_descripción       VARCHAR(200) NULL
+);
+
+
+
+ALTER TABLE historiaClinica
+ADD PRIMARY KEY (hc_id,paciente_id,tratamientos_id);
+
+
+
+CREATE TABLE horario
+(
+	horario_id           VARCHAR(4) NOT NULL,
+	fecha                DATE NOT NULL,
+	horario_hinicio      TIME NOT NULL,
+	horario_hfin         TIME NOT NULL,
+	odont_id             VARCHAR(4) NOT NULL
+);
+
+
+
+ALTER TABLE horario
+ADD PRIMARY KEY (horario_id,odont_id);
+
+
+
+CREATE TABLE odontologo
+(
+	odont_id             VARCHAR(4) NOT NULL,
+	odont_nombre         VARCHAR(50) NOT NULL,
+	odont_apellidos      VARCHAR(50) NOT NULL
+);
+
+
+
+ALTER TABLE odontologo
+ADD PRIMARY KEY (odont_id);
+
+
+
+CREATE TABLE paciente
+(
+	paciente_id          VARCHAR(4) NOT NULL,
+	paciente_dni         VARCHAR(8) NOT NULL,
+	paciente_nombre      CHAR(50) NOT NULL,
+	paciente_apellido    CHAR(50) NOT NULL,
+	paciente_telefono    VARCHAR(20) NOT NULL,
+	paceinte_direccion   VARCHAR(200) NOT NULL
+);
+
+
+
+ALTER TABLE paciente
+ADD PRIMARY KEY (paciente_id);
+
+
+
+CREATE TABLE tratamiento
+(
+	tratamientos_id      VARCHAR(4) NOT NULL,
+	tratamientos_nombre  VARCHAR(50) NOT NULL,
+	tratamientos_descripcion VARCHAR(200) NOT NULL
+);
+
+
+
+ALTER TABLE tratamiento
+ADD PRIMARY KEY (tratamientos_id);
+
+
+
+CREATE TABLE usuario
+(
+	usuario_id           VARCHAR(4) NOT NULL,
+	usuario_usuario      VARCHAR(50) NOT NULL,
+	usuario_clave        VARCHAR(535) NOT NULL,
+	usuario_estado       VARCHAR(17) NOT NULL,
+	usuario_nombre       VARCHAR(50) NOT NULL,
+	usuario_apellido     VARCHAR(50) NOT NULL,
+	usuario_telefono     VARCHAR(20) NOT NULL,
+	usuario_direccion    VARCHAR(200) NOT NULL,
+	usuario_email        VARCHAR(150) NOT NULL,
+	usuario_privilegio   INT(2) NOT NULL,
+	usuario_dni          VARCHAR(20) NOT NULL
+);
+
+
+
+ALTER TABLE usuario
+ADD PRIMARY KEY (usuario_id);
+
+
+
+ALTER TABLE cita
+ADD FOREIGN KEY R_12 (odont_id) REFERENCES odontologo (odont_id);
+
+
+
+ALTER TABLE cita
+ADD FOREIGN KEY R_35 (paciente_id) REFERENCES paciente (paciente_id);
+
+
+
+ALTER TABLE cita
+ADD FOREIGN KEY R_36 (usuario_id) REFERENCES usuario (usuario_id);
+
+
+
+ALTER TABLE historiaClinica
+ADD FOREIGN KEY R_1 (paciente_id) REFERENCES paciente (paciente_id);
+
+
+
+ALTER TABLE historiaClinica
+ADD FOREIGN KEY R_17 (tratamientos_id) REFERENCES tratamiento (tratamientos_id);
+
+
+
+ALTER TABLE horario
+ADD FOREIGN KEY R_31 (odont_id) REFERENCES odontologo (odont_id);
+
+
+
+
+ALTER TABLE paciente
+  MODIFY paciente_id int(10) NOT NULL AUTO_INCREMENT;
+
+
+
+
+ALTER TABLE usuario
+  MODIFY usuario_id int(10) NOT NULL AUTO_INCREMENT;
